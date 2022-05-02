@@ -1,0 +1,35 @@
+{
+  "name": "easy-notify-client",
+  "version": "0.2.3",
+  "description": "A client library for receiving push notifications from easy-notify",
+  "main": "./dist/notifier.min.js",
+  "files": [
+      "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hsintzuli/EasyNotify-Client.git"
+  },
+  "keywords": [
+    "webpush",
+    "notification"
+  ],
+  "author": "hsintzuli",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hsintzuli/EasyNotify-Client/issues"
+  },
+  "homepage": "https://github.com/hsintzuli/EasyNotify-Client#readme",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "socket.io-client": "^4.5.0"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.2.5",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2"
+  }
+}

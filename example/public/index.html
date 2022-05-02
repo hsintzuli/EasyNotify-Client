@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Easy Notify</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.10/sweetalert2.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/vendor/css/adminlte.min.css" />
+    <link href="/vendor/css/home.css" rel="stylesheet" /></head
+  ><style>
+    .navbar-home {
+      background-color: rgb(252, 250, 225, 0.4);
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+    }
+    .navbar-home .nav-link {
+      color: rgba(0, 0, 0, 0.5);
+      font-weight: bold;
+    }
+    .navbar-home .nav-link:hover {
+      color: #ffbf00;
+    }
+    .logo {
+      max-width: 80%;
+    }
+    body {
+      font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol';
+    }
+    .custom-btn {
+      border-color: #e5aa4d;
+      background: #f2f2f2;
+      color: #26120c;
+      font-weight: bold;
+      border-radius: 30px;
+      padding: 12px 20px;
+      line-height: normal;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      width: 100%;
+    }
+    .custom-btn:hover {
+      color: #ffbf00;
+    }
+    .custom-btn.custom-btn-bg:hover {
+      background: #ffbf00;
+      color: #ffffff !important;
+    }
+    .login {
+      background: #ebc68b;
+      color: #ffffff !important;
+      padding: 0px 5px;
+      margin-left: 30px;
+      border-radius: 10px;
+    }
+
+    .navbar .login:hover,
+    .navbar .login:focus:hover,
+    .login .nav-link:hover {
+      background: #ffbf00;
+      color: #ffffff !important;
+    }
+
+    .navbar-expand .navbar-nav .nav-link {
+      font-size: 1.1rem;
+    }
+  </style>
+  <body class="d-flex flex-column">
+    <main class="flex-shrink-0">
+      <!-- Navigation-->
+      <nav class="navbar navbar-expand navbar bg navbar-home shadow-sm mx-2 pb-1">
+        <div class="container px-5">
+          <a class="navbar-brand col-3" href="https://easynotify.site"><img class="img-fluid logo" src="/img/easy-notify-h.png" alt="logo" /></a
+          ><button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="col-9 collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-3 mb-lg-0 d-lg-flex align-items-center">
+              <li class="nav-item h-100">
+                <a class="nav-link" href="https://github.com/hsintzuli/Easy-Notifier"
+                  ><img class="img-fluid logo" src="/img/GitHub-Mark-64px.png" alt="logo"
+                /></a>
+              </li>
+              <li class="nav-item h-100"><a class="nav-link" href="https://easynotify.site">Easy-Notify</a></li>
+              <li class="nav-item h-100 login"><a class="nav-link" href="https://easynotify.site/register">Create Account</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </main>
+    <!-- Header-->
+    <header class="mx-2 mt-lg-3 mb-1" id="header">
+      <div class="container px-5 h-100 my-xl-5">
+        <div class="row gx-5 align-items-center justify-content-center ml-0">
+          <div class="col-xl-7 col-xxl-6 m-0">
+            <div class="w-100 text-bg fw-bolder text-black my-5 text-center text-xl-start">
+              <h1>Easy Notify Playground</h1>
+              <p class="lead fw-normal mb-4">
+                Quickly experience how does Web Push Notification look like in this playground. Simply subscribe to your application by the channel ID and
+                public key. Click the subscribe button and send a notification to this channel!
+              </p>
+            </div>
+          </div>
+          <div class="col-xl-7 col-xxl-6 d-xl-block text-center">
+            <form id="request" class="main_form px-5 py-5">
+              <div class="row align-items-center justify-content-center">
+                <div class="col-md-10">
+                  <input id="channel-id" class="contactus" placeholder="Channel ID" type="type" name="Name" />
+                </div>
+                <div class="col-md-10">
+                  <input id="public-key" class="contactus" placeholder="Public Key" type="type" name="Email" />
+                </div>
+                <div class="col-sm-8 col-lg-5 mb-2">
+                  <button id="unsubscribe" class="custom-btn unsubscribe-btn">UnSubscribe</button>
+                </div>
+                <div class="col-sm-8 col-lg-5 mb-2">
+                  <button id="subscribe" class="custom-btn subscribe-btn">Subscribe</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Features section-->
+    <section class="py-5">
+      <div class="container px-5 my-5">
+        <div class="row gx-5">
+          <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0">A better way to start building.</h2></div>
+          <div class="col-lg-8">
+            <div class="row gx-5 row-cols-1 row-cols-md-2">
+              <div class="col mb-5 h-100">
+                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i></div>
+                <h2 class="h5">Featured title</h2>
+                <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+              </div>
+              <div class="col mb-5 h-100">
+                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-building"></i></div>
+                <h2 class="h5">Featured title</h2>
+                <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+              </div>
+              <div class="col mb-5 mb-md-0 h-100">
+                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
+                <h2 class="h5">Featured title</h2>
+                <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+              </div>
+              <div class="col h-100">
+                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
+                <h2 class="h5">Featured title</h2>
+                <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer-->
+    <footer class="bg-dark py-4 mt-auto">
+      <div class="container px-5">
+        <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+          <div class="col-auto"><div class="small m-0 text-white">Copyright © Your Website 2022</div></div>
+          <div class="col-auto">
+            <a class="link-light small" href="#!">Privacy</a><span class="text-white mx-1">·</span><a class="link-light small" href="#!">Terms</a
+            ><span class="text-white mx-1">·</span><a class="link-light small" href="#!">Contact</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.10/sweetalert2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+  <script src="/js/dist/notifier.min.js"></script>
+  <script type="module" src="/js/index.js"></script>
+</html>

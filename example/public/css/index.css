@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css?family=Rajdhani:300,400,500,600,700');
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+@import url('https://fonts.googleapis.com/css?family=Raleway:100,400,600,700,900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif:400,700&display=swap');
+
+html,
+body {
+  height: 100%
+}
+
+body {
+  color: #666666;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.80857;
+  font-weight: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+     letter-spacing: 0;
+     font-weight: normal;
+     position: relative;
+     padding: 0 0 10px 0;
+     font-weight: normal;
+     line-height: normal;
+     color: #111111;
+     margin: 0
+}
+
+h1 {
+     font-size: 24px;
+}
+
+h2 {
+     font-size: 22px;
+}
+
+h3 {
+     font-size: 18px;
+}
+
+h4 {
+     font-size: 16px
+}
+
+h5 {
+     font-size: 14px
+}
+
+h6 {
+     font-size: 13px
+}
+
+.main_form {
+  /* padding: 60px 50px 80px 50px; */
+  background: #73534C;
+  border-radius: 10px;
+  border-top: #F2AC57 solid 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-bg h1 {
+  color: #5a2f27;
+  font-size: 80px;
+  line-height: 100px;
+  padding-bottom: 20px;
+  font-weight: bold;
+}
+
+.main_form .contactus {
+  border: inherit;
+  margin-bottom: 70px;
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  color: #fbfaf8;
+  font-size: 16px;
+  font-weight: 400;
+  border-radius: inherit;
+  border-bottom: #fff solid 1px;
+}
+
+.main_form .send_btn {
+  font-size: 17px;
+  transition: ease-in all 0.5s;
+  background-color: #000;
+  color: #fff;
+  padding: 13px 0px;
+  margin: 0 auto;
+  max-width: 200px;
+  width: 100%;
+  display: block;
+  font-weight: 500;
+  text-transform: uppercase;
+  border-radius: 35px;
+}
+
+::placeholder {
+  color: white;
+  font-size: 1.5em;
+}

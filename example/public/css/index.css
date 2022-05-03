@@ -4,11 +4,11 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Serif:400,700&display=swap');
 
 .b-example-divider {
-  height: 3rem;
+  height: 2rem;
   background-color: rgba(0, 0, 0, .1);
   border: solid rgba(0, 0, 0, .15);
-  border-width: 1px 0;
-  box-shadow: inset 0 0.5em 1.0em rgb(0 0 0 / 10%), inset 0 0.125em 0.5em rgb(0 0 0 / 15%);
+  border-width: 0.5px 0;
+  box-shadow: inset 0 0.2em 0.5em rgb(0 0 0 / 10%), inset 0 0.125em 0.5em rgb(0 0 0 / 15%);
 }
 
 body {

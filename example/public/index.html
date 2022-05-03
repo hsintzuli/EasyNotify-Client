@@ -21,6 +21,10 @@
     text-align: left;
     }
 
+      .hljs
+    {
+    font-size:1rem !important;
+    }
     .navbar-home {
       background-color: rgb(252, 250, 225, 0.4);
       border-bottom-left-radius: 30px;
@@ -67,14 +71,19 @@
       background: #ffbf00;
       color: #ffffff !important;
     }
-    .login {
+    .login, .get-btn {
       background: #ebc68b;
       color: #ffffff !important;
-      padding: 0px 5px;
       margin-left: 30px;
       border-radius: 10px;
     }
 
+    .login {
+      padding: 0px 5px;
+    }
+
+    .get-btn:hover,
+    .get-btn:focus:hover,
     .navbar .login:hover,
     .navbar .login:focus:hover,
     .login .nav-link:hover {
@@ -84,6 +93,15 @@
 
     .navbar-expand .navbar-nav .nav-link {
       font-size: 1.1rem;
+    }
+
+    p a {
+    color: #5a2f27;
+    text-decoration: none;
+    }
+
+    p a:hover {
+    color: #F2AC57;
     }
   </style>
   <body class="d-flex flex-column">
@@ -113,14 +131,13 @@
     </main>
     <!-- Header-->
     <header class="mx-2 mt-lg-3 mb-1" id="header">
-      <div class="container px-5 h-100 my-xl-5">
+      <div class="container px-5 py-5 h-100 my-xl-5">
         <div class="row gx-5 align-items-center justify-content-center ml-0">
           <div class="col-xl-7 col-xxl-6 m-0">
             <div class="w-100 text-bg fw-bolder text-black my-5 text-center text-xl-start">
               <h1>Easy Notify Playground</h1>
               <p class="lead fw-normal mb-4">
-                Quickly experience how does Web Push Notification look like in this playground. Simply subscribe to your application by the channel ID and
-                public key. Click the subscribe button and send a notification to this channel!
+                Simply subscribe to your application by the channel ID and public key. Click the subscribe button and send a notification to this channel!
               </p>
             </div>
           </div>
@@ -150,26 +167,54 @@
     <main>
       <div class="b-example-divider"></div>
     
+      <div class="container my-5">
+        <div class="row p-3 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow">
+          <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+            <h1 class="display-5 fw-bold lh-1">Example notification setting for this playground</h1>
+            <p class="fs-5">Quickly experience how does Web Push Notification look like. Try to send a notification through API and set the config as the example on the right.</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+              <button type="button" class="btn get-btn btn-lg px-4 mt-5 me-md-2 fw-bold">Get Source Code</button>
+            </div>
+          </div>
+          <div class="col-lg-4  p-0">
+            <pre><code class="has-line-data" class="language-json">
+  /* use sweetalert */
+  "config":{
+    "type":"sweetalert",
+    "status":"success"
+  }
+  /* use toastr */
+  "config":{
+    "type":"toastr",
+    "status":"success"
+  }
+            </code></pre>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="b-example-divider"></div>
       <div class="px-3 py-5 my-5 text-center border-bottom">
         <h1 class="display-4 fw-bold">Basic Usage</h1>
         <div class="col-lg-9 mx-auto">
         <div class="overflow-hidden" style="max-height: 80vh;">
           <div class="container px-5"  loading="lazy">
-            <h4 id="include-easy-notify-client">You can include notifier.min.js as script file. </h4>
-            <pre><code class="lang-html"><span class="xml">// In your html
-            <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/easy-notify-client/dist/notifier.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"> 
-                <span class="hljs-comment">// Access notifier through EasyNotify.notifier</span>
-                <span class="hljs-keyword">await</span> EasyNotify.notifier.init() 
-            
-                <span class="hljs-comment">// or</span>
-                <span class="hljs-keyword">const</span> </span></span><span class="hljs-template-variable">{ notifier }</span><span class="xml"><span class="javascript"> = windoe.EasyNotify
-                <span class="hljs-keyword">await</span> notifier.init()
-            </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
-            </code></pre>
-            <h4 id="include-easy-notify-client">Or include easy-notify-client in your project using Webpack or other bundlers.</h4>
-            <pre><code class="lang-javascript"><span class="hljs-keyword">import</span>  { notifier }  <span class="hljs-keyword">from</span>  <span class="hljs-string">"easy-notify-client"</span>;  
-            <span class="hljs-keyword">await</span> notifier.init()
+            <h4 class="pb-0">You can include notifier.min.js as script file. </h4>
+<pre><code class="lang-html"><span class="xml">// In your html
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/easy-notify-client/dist/notifier.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"> 
+  <span class="hljs-comment">// Access notifier through EasyNotify.notifier</span>
+  <span class="hljs-keyword">await</span> EasyNotify.notifier.init() 
+              
+  <span class="hljs-comment">// or</span>
+  <span class="hljs-keyword">await</span> notifier.init()
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+              </code></pre>
+            <h4 class="pt-3 pb-0">Or include easy-notify-client in your project using Webpack or other bundlers.</h4>
+            <pre><code class="lang-javascript">
+  import  { notifier }  from  "easy-notify-client";  
+  await notifier.init() 
             </code></pre>
           </div>
           </div>
@@ -205,7 +250,7 @@ $(<span>document</span>).ready(<span class="hljs-keyword">async</span>  <span cl
 </div>
 <div class="col-lg-5">
 <h1 class="display-5 fw-bold lh-1 mb-5">Set the push handler and subscribe to your channel!</h1>
-<p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+<p class="fs-5">The overall workflow of the notifier is pretty simple. Initialize with required service worker script, set handler for received notification, and then subscribe.</p>
 </div>
 </div>
 </div>
@@ -216,18 +261,17 @@ $(<span>document</span>).ready(<span class="hljs-keyword">async</span>  <span cl
         <div class="row align-items-center g-lg-5 py-5">
           <div class="col-lg-6 text-center text-lg-start">
             <h1 class="display-4 fw-bold lh-1 mb-3">Customize your notification handler</h1>
-            <p class="col-lg-10 fs-4">Customize the notification through related other useful tools, like <a href="https://sweetalert2.github.io/">SweetAlert2</a> or <a href="https://github.com/CodeSeven/toastr">toastr</a>.</p>
-          </div>
-          <div class="col-md-10 mx-auto col-lg-6">
-            <div class="p-4">
+            <p class="col-lg-10 fs-5">Customize the notification through other useful tools, like <a href="https://sweetalert2.github.io/">SweetAlert2</a> or <a href="https://github.com/CodeSeven/toastr">toastr</a>.</p>
 <pre><code  class="language-js">notifier.setPushHandler((data) =&gt; {
   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Test handler receive data'</span>, data);
   <span class="hljs-keyword">const</span> { type } = <span class="hljs-built_in">JSON</span>.parse(data.config);
   <span class="hljs-keyword">const</span>  handler = handlers[type] || alert;
   handler(data);
-              </code></pre>
-              
-              <pre><code class="language-js">
+</code></pre>
+          </div>
+          <div class="col-md-10 mx-auto col-lg-6">
+            <div class="p-4">
+              <pre class="px-0 mx-0"><code class="language-js">
 <span class="hljs-keyword">const</span>  sweetHandler = (data) =&gt; {
   <span class="hljs-keyword">let</span> { status } = <span class="hljs-built_in">JSON</span>.parse(data.config);
     Swal.fire(data.title, data.body, status);
@@ -251,37 +295,7 @@ $(<span>document</span>).ready(<span class="hljs-keyword">async</span>  <span cl
             </div>
           </div>
         </div>
-      </div>
-    
-      <div class="b-example-divider"></div>
-    
-      <div class="container my-5">
-        <div class="row p-3 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
-          <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
-            <h1 class="display-4 fw-bold lh-1">Try to send a notification through API</h1>
-            <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-              <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Primary</button>
-              <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>
-            </div>
-          </div>
-          <div class="col-lg-4  p-0 shadow-lg">
-            <pre><code class="has-line-data" class="language-json">
-  /* use sweetalert */
-  "config":{
-    "type":"sweetalert",
-    "status":"success"
-  }
-  /* use toastr */
-  "config":{
-    "type":"toastr",
-    "status":"success"
-  }
-            </code></pre>
-          </div>
-        </div>
-      </div>
-
+      </div> 
       <div class="b-example-divider"></div>
     </main>
   </div>

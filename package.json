@@ -1,6 +1,6 @@
 {
   "name": "easy-notify-client",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "A client library for receiving push notifications from easy-notify",
   "main": "./dist/notifier.min.js",
   "files": [

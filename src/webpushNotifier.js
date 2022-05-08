@@ -117,7 +117,7 @@ class WebpushNotifier {
         return true;
       }
     } catch (err) {
-      return console.error('[Webpush] subscribe error:', err);
+      throw new Error('[Webpush] subscribe error:', err);
     }
   }
 
@@ -133,7 +133,7 @@ class WebpushNotifier {
       );
       return console.log('[Webpush] Unsubscribe to server successfully');
     } catch (err) {
-      return console.error('[Webpush] unsubscribe error', err);
+      throw new Error('[Webpush] unsubscribe error', err);
     }
   }
 
@@ -146,23 +146,24 @@ class WebpushNotifier {
     }
 
     // TODO: get the origin public key from PushSubscription
-    let existedSubscription = subscription.toJSON();
-    let oldPublicKey = existedSubscription.keys.p256dh;
-    console.log('old public key', oldPublicKey);
-    console.log('new public key', newPublicKey);
-    if (oldPublicKey === newPublicKey) {
-      console.log('[Webpush] Already subscribe to the channel:', channelId);
-      return Promise.resolve(flase);
-    }
+    // let existedSubscription = subscription.toJSON();
+    // let oldPublicKey = existedSubscription.keys.p256dh;
+    // console.log('old public key', oldPublicKey);
+    // console.log('new public key', newPublicKey);
+    // if (oldPublicKey === newPublicKey) {
+    //   console.log('[Webpush] Already subscribe to the channel:', channelId);
+    //   return Promise.resolve(flase);
+    // }
 
     // Note: when the client subscribe to the same public key, the browser will generate the same endpoint.
     // When getting the subscribe request from the endpoint that already exists,
     // easy-notify server will only update the client's update time and reserve other client's information
     try {
-      // await this._unsubscribe();
       await this.#subscribe(channelId, newPublicKey);
     } catch (error) {
-      console.warn('[Webpush] Update Subscription Error');
+      console.warn('[Webpush]  Already subscribe to other channel. Update the original subscription');
+      await this.#unsubscribe();
+      await this.#subscribe(channelId, newPublicKey);
     }
   }
 

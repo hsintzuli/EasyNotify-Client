@@ -35,9 +35,14 @@ $(document).ready(async function () {
   await EasyNotify.notifier.init();
   EasyNotify.notifier.setPushHandler((data) => {
     console.log('Test handler receive data', data);
-    const { type } = JSON.parse(data.config);
-    const handler = handlers[type] || alert;
-    handler(data);
+    try {
+      const { type } = JSON.parse(data.config);
+      const handler = handlers[type];
+      handler(data);
+    } catch (error) {
+      console.log('No config, just alert the notification')
+      alert(data.title + '\n' + data.body)
+    }
   });
 
   $('#subscribe').click(async function (event) {

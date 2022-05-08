@@ -116,9 +116,16 @@ Set the handler manager to notifier
 
 notifier.setPushHandler((data) => {
 	console.log('Test handler receive data', data);
-	const { type } = JSON.parse(data.config);
-	const  handler = handlers[type] || alert;
-	handler(data);
+    console.log('Test handler receive data', data);
+    try {
+      const { type } = JSON.parse(data.config);
+      const handler = handlers[type];
+      handler(data);
+    } catch (error) {
+      console.log('No config, just alert the notification');
+      alert(data.title + '\n' + data.body);
+    }
+})
 
 ```
 

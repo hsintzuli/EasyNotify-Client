@@ -201,7 +201,8 @@
         <div class="overflow-hidden" style="max-height: 80vh;">
           <div class="container px-5"  loading="lazy">
             <p class="fs-5 text-left ml-3 mb-0">You can include notifier.min.js as script file. </p>
-<pre><code class="lang-html"><span class="xml">// In your html
+<pre><code class="lang-html"><span class="xml">
+  // In your html
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/easy-notify-client/dist/notifier.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"> 
   <span class="hljs-comment">// Access notifier through EasyNotify.notifier</span>
@@ -227,25 +228,25 @@
         <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
           <div class="col-11 col-sm-9 col-lg-7">
 <pre><code class="has-line-data" data-line-start="66" data-line-end="91" class="language-javascript"><span class="hljs-comment">// Basic Example</span>           
-$(<span>document</span>).ready(<span class="hljs-keyword">async</span>  <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-  <span>// Initialize notifier</span>
-  <span>await</span>  notifier.init(<span class="hljs-string">'/notify-sw.js'</span>, <span class="hljs-string">'Notify-sw'</span>);
-  notifier.setPushHandler((data) =&gt; {
-    <span>console</span>.log(data);
-  }); 
+$(document).ready(async function () {
+  // Initialize notifier
+  await notifier.init('/notify-sw.js', 'Notify-sw');
+  notifier.setPushHandler((data) => {
+  console.log(data);
+}); 
             
-  <span class="hljs-comment">// Subcribe to your channel</span>
-  $(<span class="hljs-string">'.subscribe-btn'</span>).click(<span class="hljs-keyword">async</span>  <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) </span>{
+  <span class="hljs-comment">
+// Subcribe to your channel
+$('.subscribe-btn').click(async function(event) {
     event.preventDefault();
-    <span class="hljs-keyword">await</span>  notifier.subscribe(YOUR  CHANNELID, YOUR  PUBLICKEY);
-  });
+    await notifier.subscribe(YOUR  CHANNELID, YOUR  PUBLICKEY);
+});
             
-  <span class="hljs-comment">// Unsubcribe to your channel</span>
-    $(<span class="hljs-string">'#unsubscribe'</span>).click(<span class="hljs-keyword">async</span>  <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) 
-    <span class="hljs-title">event</span>.<span class="hljs-title">preventDefault</span>(<span class="hljs-params"></span>);
-    <span class="hljs-title">await</span>  <span class="hljs-title">notifier</span>.<span class="hljs-title">unsubscribe</span>(<span class="hljs-params"></span>);
-    });
-  });
+// Unsubcribe to your channel
+$('#unsubscribe').click(async function (event) {
+  event.preventDefault();
+  await EasyNotify.notifier.unsubscribe();
+});
 </span></code></pre>
 </div>
 <div class="col-lg-5">
@@ -262,35 +263,43 @@ $(<span>document</span>).ready(<span class="hljs-keyword">async</span>  <span cl
           <div class="col-lg-6 text-center text-lg-start">
             <h1 class="display-4 fw-bold lh-1 mb-3">Customize your notification handler</h1>
             <p class="col-lg-10 fs-5">Customize the notification through other useful tools, like <a href="https://sweetalert2.github.io/">SweetAlert2</a> or <a href="https://github.com/CodeSeven/toastr">toastr</a>.</p>
-<pre><code  class="language-js">notifier.setPushHandler((data) =&gt; {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Test handler receive data'</span>, data);
-  <span class="hljs-keyword">const</span> { type } = <span class="hljs-built_in">JSON</span>.parse(data.config);
-  <span class="hljs-keyword">const</span>  handler = handlers[type] || alert;
-  handler(data);
+<pre><code  class="language-js">
+notifier.setPushHandler((data) => {
+  console.log('Test handler receive data', data);
+    console.log('Test handler receive data', data);
+    try {
+      const { type } = JSON.parse(data.config);
+      const handler = handlers[type];
+      handler(data);
+    } catch (error) {
+      console.log('No config, just alert the notification')
+      alert(data.title + '\n' + data.body)
+    }
+})
 </code></pre>
           </div>
           <div class="col-md-10 mx-auto col-lg-6">
             <div class="p-4">
               <pre class="px-0 mx-0"><code class="language-js">
-<span class="hljs-keyword">const</span>  sweetHandler = (data) =&gt; {
-  <span class="hljs-keyword">let</span> { status } = <span class="hljs-built_in">JSON</span>.parse(data.config);
-    Swal.fire(data.title, data.body, status);
-  ;
+const sweetHandler = (data) = {
+  let { status } =JSON.parse(data.config);
+  Swal.fire(data.title, data.body, status);
+}
               
-<span class="hljs-keyword">const</span>  toastrType = {
-    success:  toastr.success,
-    warning:  toastr.warning,
-    error:  toastr.error,
-  };
-<span class="hljs-keyword">const</span>  toastrHandler = (data) =&gt; {
-  <span class="hljs-keyword">const</span> { status } = <span class="hljs-built_in">JSON</span>.parse(data.config);
-  <span class="hljs-keyword">const</span>  handler = toastrType[status] || alert;
+const toastrType = {
+  success:  toastr.success,
+  warning:  toastr.warning,
+  error:  toastr.error,
+};
+const toastrHandler = (data) => {
+  const { status } = JSON.parse(data.config);
+  const  handler = toastrType[status] || alert;
   handler(data.title, data.body);
 };
-<span class="hljs-keyword">const</span>handlers = {
+const handlers = {
   sweetalert:  sweetHandler,
   toastr:  toastrHandler,
-;
+};
               </code></pre>
             </div>
           </div>

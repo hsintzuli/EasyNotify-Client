@@ -30,11 +30,9 @@ class SocketNotifier {
 
     // Register socket client when socket connect successfully
     socket.on('connect', () => {
-      console.log('[Websocket] connect successfully');
       const engine = socket.io.engine;
 
       engine.on('close', (reason) => {
-        console.log('[Websocket] connection is closed');
         this.#setSocket();
       });
 
@@ -62,8 +60,7 @@ class SocketNotifier {
   #ack(id) {
     axios
       .get(`https://easynotify.site/api/1.0/subscription/tracking?id=${id}`)
-      .then((res) => console.log('[Websocket] ack to received notification successfully'))
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   }
 
   // Subcribe to the specific channel
@@ -73,14 +70,18 @@ class SocketNotifier {
     }
 
     this.#socket = this.#socket || new MimicSocket();
-    if (this.#channel_id === channel_id) {
-      return console.log(`[Websocket] already subscribe to channel ${channel_id}`);
+    if (this.#channel_id && this.#channel_id === channel_id) {
+      return;
+    }
+
+    if (this.#channel_id) {
+      this.unsubscribe();
     }
 
     // Subscribe to websocket server
     this.#channel_id = channel_id;
     this.#socket.emit('subscribe', { channel_id });
-    console.log(`[Websocket] subscribe to channel ${channel_id} successfully `);
+    this.#socket.off('push');
     this.#socket.on('push', (data) => {
       if (data.code) this.#ack(data.code);
       if (data.title) {
@@ -95,7 +96,6 @@ class SocketNotifier {
     const channel_id = this.#channel_id;
     this.#socket.emit('unsubscribe', { channel_id });
     this.#channel_id = '';
-    console.log(`[Websocket] unsubscribe to channel ${channel_id} successfully`);
   }
 
   // Set the hander for websocket notification

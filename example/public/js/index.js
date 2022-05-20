@@ -49,13 +49,22 @@ $(document).ready(async function () {
     event.preventDefault();
     const channelId = $('#channel-id').val();
     const publicKey = $('#public-key').val();
-    await EasyNotify.notifier.subscribe(channelId, publicKey);
-    toastr.success('Subscribe successfully');
+    const subscribeSuccess = await EasyNotify.notifier.subscribe(channelId, publicKey);
+    if (subscribeSuccess) {
+      toastr.success('Subscribe successfully');
+    } else {
+      toastr.error('Subscribe fail');
+    }
+    
   });
 
   $('#unsubscribe').click(async function (event) {
     event.preventDefault();
-    await EasyNotify.notifier.unsubscribe();
-    toastr.success('Unsubscribe successfully');
+    const unsubscribeSuccess = await EasyNotify.notifier.unsubscribe();
+    if (unsubscribeSuccess) {
+      toastr.success('Unsubscribe successfully');
+    } else {
+      toastr.error('Unsubscribe fail');
+    }
   });
 });

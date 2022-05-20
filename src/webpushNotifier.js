@@ -29,7 +29,6 @@ class WebpushNotifier {
   #pushHandler;
 
   constructor() {
-    // this.#isSubscribed = false;
     this.#subscription = null;
     this.#channel = null;
     this.#channelId = '';
@@ -47,7 +46,6 @@ class WebpushNotifier {
     }
     try {
       const swReg = await navigator.serviceWorker.register(serviceWorkerPath);
-      console.log('[Webpush] Service Worker is registered', swReg);
       this.#sw = swReg;
       this.#setPushListener(broadcastChannel);
     } catch (error) {
@@ -63,8 +61,7 @@ class WebpushNotifier {
       if (event.data.title === 'auth') {
         axios
           .get(`https://easynotify.site/api/1.0/subscription/verify?code=${event.data.code}`)
-          .then((res) => console.log('[Webpush] Receive subscription verification'))
-          .catch((err) => console.log(err));
+          .catch((err) => console.error(err));
       } else {
         this.#ack(event.data.notification_id);
         this.#pushHandler(event.data);
@@ -105,7 +102,6 @@ class WebpushNotifier {
 
     try {
       this.#subscription = await this.#sw.pushManager.subscribe(subscriptionOptions);
-      console.log('[Webpush] New subscription', this.#subscription);
       if (this.#subscription) {
         console.log('[Webpush] Successfully subscribe to webpush server');
         const res = await axios.post(
@@ -113,11 +109,10 @@ class WebpushNotifier {
           { channel_id: this.#channelId, subscription: this.#subscription },
           { headers: { 'content-type': 'application/json' } }
         );
-        console.log('[Webpush] Send subscription to server');
         return true;
       }
     } catch (err) {
-      throw new Error('[Webpush] subscribe error:', err);
+      throw new Error('[Webpush] subscribe error');
     }
   }
 
@@ -131,9 +126,8 @@ class WebpushNotifier {
         { data: { endpoint: subscription.endpoint } },
         { headers: { 'content-type': 'application/json' } }
       );
-      return console.log('[Webpush] Unsubscribe to server successfully');
     } catch (err) {
-      throw new Error('[Webpush] unsubscribe error', err);
+      throw new Error('[Webpush] unsubscribe error');
     }
   }
 
@@ -141,19 +135,8 @@ class WebpushNotifier {
   async #updateSubscription(channelId, newPublicKey) {
     const subscription = this.#subscription;
     if (!subscription || typeof subscription !== 'object') {
-      console.log('Test: null subscription', subscription);
       return Promise.resolve(false);
     }
-
-    // TODO: get the origin public key from PushSubscription
-    // let existedSubscription = subscription.toJSON();
-    // let oldPublicKey = existedSubscription.keys.p256dh;
-    // console.log('old public key', oldPublicKey);
-    // console.log('new public key', newPublicKey);
-    // if (oldPublicKey === newPublicKey) {
-    //   console.log('[Webpush] Already subscribe to the channel:', channelId);
-    //   return Promise.resolve(flase);
-    // }
 
     // Note: when the client subscribe to the same public key, the browser will generate the same endpoint.
     // When getting the subscribe request from the endpoint that already exists,
@@ -161,7 +144,7 @@ class WebpushNotifier {
     try {
       await this.#subscribe(channelId, newPublicKey);
     } catch (error) {
-      console.warn('[Webpush]  Already subscribe to other channel. Update the original subscription');
+      console.warn('[Webpush] Already subscribe to other channel. Update the original subscription');
       await this.#unsubscribe();
       await this.#subscribe(channelId, newPublicKey);
     }
@@ -171,7 +154,6 @@ class WebpushNotifier {
   #ack(id) {
     axios
       .get(`https://easynotify.site/api/1.0/subscription/tracking?id=${id}`)
-      .then((res) => console.log('[Websocket] ack to received notification successfully'))
       .catch((err) => console.log(err));
   }
 
@@ -193,7 +175,7 @@ class WebpushNotifier {
   async unsubscribe() {
     const subscribed = await this.#isSubscribed();
     if (!subscribed) {
-      return console.log('[Webpush] no subscription to unsubscribe');
+      return;
     }
     await this.#unsubscribe();
   }

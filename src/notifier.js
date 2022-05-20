@@ -21,8 +21,10 @@ class Notifier {
       this.socketNotifier.init();
       await this.WebpushNotifier.init(serviceWorkerPath, broadcastChannel);
       this.isInit = true;
+      return true;
     } catch (error) {
       console.error(error);
+      return false;
     }
   }
 
@@ -32,8 +34,10 @@ class Notifier {
     try {
       this.socketNotifier.setPushHandler(handler);
       this.WebpushNotifier.setPushHandler(handler);
+      return true;
     } catch (error) {
       console.error(error);
+      return false;
     }
   }
 
@@ -43,8 +47,10 @@ class Notifier {
     try {
       this.socketNotifier.subscribe(channelId);
       await this.WebpushNotifier.subscribe(channelId, publicKey);
+      return true;
     } catch (error) {
       console.error(error);
+      return false;
     }
   }
 
@@ -53,8 +59,10 @@ class Notifier {
     try {
       this.socketNotifier.unsubscribe();
       await this.WebpushNotifier.unsubscribe();
+      return true;
     } catch (error) {
       console.error(error);
+      return false;
     }
   }
 }

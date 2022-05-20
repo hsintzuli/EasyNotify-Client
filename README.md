@@ -69,7 +69,7 @@ import { notifier } from  './modules/notifier.js';
 
 $(document).ready(async  function () {
 	// Initialize notifier
-	await  notifier.init('/notify-sw.js', 'Notify-sw');
+	await notifier.init('/notify-sw.js', 'Notify-sw');
 	
 	// Set push hander to process the content of notification
 	notifier.setPushHandler((data) => {
@@ -77,15 +77,15 @@ $(document).ready(async  function () {
 		}); 
 
 	// Subcribe to your channel
-	$('.subscribe-btn').click(async  function (event) {
+	$('.subscribe-btn').click(async function (event) {
 		event.preventDefault();
-		await  notifier.subscribe(YOUR  CHANNELID, YOUR  PUBLICKEY);
+		await notifier.subscribe(YOUR CHANNELID, YOUR PUBLICKEY);
 	});
 
 	// Unsubcribe to your channel
-	$('#unsubscribe').click(async  function (event) 
+	$('#unsubscribe').click(async function (event) {
 		event.preventDefault();
-		await  notifier.unsubscribe();
+		await notifier.unsubscribe();
 	});
 });
 ```
@@ -100,9 +100,9 @@ notifier exposes four functions:
 -   `subscribe`
 -   `unsubscribe`
 #### init
-The init function will initialize the SocketIO client and register the service worker. It takes two argument: Path of service worker script, Name of broadcast channel
+The init function will initialize the SocketIO client and register the service worker. It takes two argument: Path of service worker script, Name of broadcast channel. If initialize successfully, return true, otherwise, return false.
 ```js
-await notifier.init(ServiceWorkerPath, BroadcastChannelName) 
+const initSuccess = await notifier.init(ServiceWorkerPath, BroadcastChannelName) 
 ```
   The default value of  ServiceWorkerPath is `'/notify-sw.js'`, and `'Notify-sw'` for BroadcastChannelName.
 
@@ -133,53 +133,57 @@ notifier.setPushHandler((data) => {
 
 ```js
 
-const  sweetHandler = (data) => {
+const sweetHandler = (data) => {
 	let { status } = JSON.parse(data.config);
 	Swal.fire(data.title, data.body, status);
 };
 
-const  toastrType = {
-	success:  toastr.success,
-	warning:  toastr.warning,
-	error:  toastr.error,
+const toastrType = {
+	success: toastr.success,
+	warning: toastr.warning,
+	error: toastr.error,
 	};
-const  toastrHandler = (data) => {
+const toastrHandler = (data) => {
 	const { status } = JSON.parse(data.config);
-	const  handler = toastrType[status] || alert;
+	const handler = toastrType[status] || alert;
 	handler(data.title, data.body);
 };
-const  handlers = {
-	sweetalert:  sweetHandler,
-	toastr:  toastrHandler,
+const handlers = {
+	sweetalert: sweetHandler,
+	toastr: toastrHandler,
 };
 ```
 
-You can then try to send Notification through website or API like:
+You can then try to send Notification with customize config through website or API like:
 
 ```json
 
-/* use sweetalert */
-"config":{
+/* use sweetalert in config*/
+{
 	"type":"sweetalert",
 	"status":"success"
-	}
-/* use toastr */
-"config":{
+}
+/* use toastr in config */
+{
 	"type":"toastr",
 	"status":"success"
-	}
+}
 ```
 
 #### subscribe
 The subscribe function requires two arguments: your Channel ID and Public Key.
-You can find them on easynotify.site/mangement/apps/channel 
+You can find them by examine the channels in [easynotify.site](https://easynotify.site/management/apps).
+If subscribe successfully, return true, otherwise, return false.
 ```js
-	await notifier.subscribe(ChannelID, PublicKey) 
+// return true if subscribe successfully
+const subscribeSuccess = await notifier.subscribe(ChannelID, PublicKey) 
 ```
 Note: when the function is invoked, the browser will ask the permission of clients to allow push notification. You can prompt your clients through some UI.
 
 #### unsubscribe
-The unsubscribe function will remove the origin subscription 
+The unsubscribe function will remove the origin subscription.
+If unsubscribe successfully, return true, otherwise, return false. 
 ```js
-	await notifier.unsubscribe() 
+// return true if unsubscribe successfully
+const unsubscribeSuccess = await notifier.unsubscribe() 
 ```

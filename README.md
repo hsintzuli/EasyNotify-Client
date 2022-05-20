@@ -17,13 +17,13 @@ You can include notifier.min.js as script file.
 	await EasyNotify.notifier.init() 
 
 	// or
-	const { notifier } = windoe.EasyNotify
+	const { notifier } = window.EasyNotify
 	await notifier.init()
 </script>
 ```
 Or include easy-notify-client in your project using Webpack or other bundlers.
 ```javascript
-import  { notifier }  from  "easy-notify-client";  
+import { notifier } from "easy-notify-client";  
 await notifier.init() 
 ```
 
@@ -34,21 +34,21 @@ Web-Push requires a service worker script to register the service worker of your
 Create a notify-sw.js at the top scope of your folder:
   ```javascript
 // (example) notify-sw.js:
-const  channel = new  BroadcastChannel('Notify-sw');  //The name of BoradcastChannel is used to initialize the notifier
+const channel = new BroadcastChannel('Notify-sw');  //The name of BoradcastChannel is used to initialize the notifier
 
 // Register event listener for the 'push' event.
-self.addEventListener('push', async  function (event) {
-	const  data = event.data ? event.data.json() : 'no payload';
+self.addEventListener('push', async function (event) {
+	const data = event.data ? event.data.json() : 'no payload';
 	if (data.title === 'auth') {
-		return  channel.postMessage(data);
+		return channel.postMessage(data);
 		}
 	channel.postMessage(data);
 
 	// Keep the service worker alive until the notification is created.
 	event.waitUntil(
 		self.registration.showNotification(data.title, {
-			body:  data.body,
-			icon:  data.icon,
+			body: data.body,
+			icon: data.icon,
 			})
 		);
 	});
@@ -65,9 +65,9 @@ Feel free to modify the name of service worker and broadcast channel as you want
 #### Set the push handler and subscribe to your channel!
   ```javascript
 // Basic Example
-import { notifier } from  './modules/notifier.js';
+import { notifier } from './modules/notifier.js';
 
-$(document).ready(async  function () {
+$(document).ready(async function () {
 	// Initialize notifier
 	await notifier.init('/notify-sw.js', 'Notify-sw');
 	
@@ -79,7 +79,7 @@ $(document).ready(async  function () {
 	// Subcribe to your channel
 	$('.subscribe-btn').click(async function (event) {
 		event.preventDefault();
-		await notifier.subscribe(YOUR CHANNELID, YOUR PUBLICKEY);
+		await notifier.subscribe(YOUR_CHANNELID, YOUR_PUBLICKEY);
 	});
 
 	// Unsubcribe to your channel
@@ -142,12 +142,14 @@ const toastrType = {
 	success: toastr.success,
 	warning: toastr.warning,
 	error: toastr.error,
-	};
+};
+
 const toastrHandler = (data) => {
 	const { status } = JSON.parse(data.config);
 	const handler = toastrType[status] || alert;
 	handler(data.title, data.body);
 };
+
 const handlers = {
 	sweetalert: sweetHandler,
 	toastr: toastrHandler,

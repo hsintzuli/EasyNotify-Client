@@ -46,7 +46,7 @@
     }
 
     .nav-link .logo {
-      width:60px;
+      width:50px;
       max-width: 60%;
       max-height: 90%;
       margin: auto;
@@ -102,7 +102,7 @@
 
     p a {
     color: #5a2f27;
-    text-decoration: none;
+    /* text-decoration: none; */
     }
 
     p a:hover {
@@ -184,16 +184,16 @@
           </div>
           <div class="col-lg-4  p-0">
             <pre><code class="has-line-data" class="language-json">
-  /* use sweetalert */
-  "config":{
-    "type":"sweetalert",
-    "status":"success"
-  }
-  /* use toastr */
-  "config":{
-    "type":"toastr",
-    "status":"success"
-  }
+/* use sweetalert in 'config'*/
+{
+  "type":"sweetalert",
+  "status":"success"
+}
+/* use toastr in 'config'*/
+{
+  "type":"toastr",
+  "status":"success"
+}
             </code></pre>
           </div>
         </div>
@@ -201,59 +201,88 @@
 
       
       <div class="b-example-divider"></div>
-      <div class="px-3 py-5 my-5 text-center">
-        <h1 class="display-4 fw-bold">Basic Usage</h1>
-        <div class="col-lg-9 mx-auto ">
-        <div class="overflow-hidden" style="max-height: 80vh;">
-          <div class="container px-5"  loading="lazy">
-            <p class="fs-5 text-left ml-3 mb-0">You can include notifier.min.js as script file. </p>
-<pre><code class="lang-html"><span class="xml">
-  // In your html
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/easy-notify-client/dist/notifier.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"> 
-  <span class="hljs-comment">// Access notifier through EasyNotify.notifier</span>
-  <span class="hljs-keyword">await</span> EasyNotify.notifier.init() 
-              
-  <span class="hljs-comment">// or</span>
-  <span class="hljs-keyword">await</span> notifier.init()
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
-              </code></pre>
-            <p class="fs-5 text-left ml-3 mb-0 mt-3">Or include easy-notify-client in your project using Webpack or other bundlers.</p>
-            <pre><code class="lang-javascript">
-  import  { notifier }  from  "easy-notify-client";  
-  await notifier.init() 
-            </code></pre>
-          </div>
-          </div>
+      <div class="container col-xxl-10 px-3 py-5 my-5 text-center">
+          <h1 class="display-4 fw-bold">Basic Usage</h1>
+          <div class="col-lg-9 mx-auto ">
+            <div class="container px-5"  loading="lazy">
+              <p class="fs-5 text-left ml-3 mb-0">You can include notifier.min.js as script file. </p>
+  <pre><code class="language-html">// Access notifier through EasyNotify.notifier
+  &lt;script src="/easy-notify-client/dist/notifier.min.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    await EasyNotify.notifier.init() 
+                  
+    // or
+    const { notifier } = window.EasyNotify
+    await notifier.init()
+  &lt;/script&gt;
+  </code></pre>
+              <p class="fs-5 text-left ml-3 mb-0 mt-3">Or include easy-notify-client in your project using Webpack or other bundlers.</p>
+              <pre><code class="lang-javascript">import { notifier } from "easy-notify-client";  
+  await notifier.init() </code></pre>
+            </div>
         </div>
       </div>
-    
+
       <div class="b-example-divider"></div>
-    
-      <div class="container col-xxl-8 px-3 py-5">
+      <div class="container col-xxl-10 px-3 py-5">
         <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
           <div class="col-11 col-sm-9 col-lg-7">
-<pre><code class="has-line-data" data-line-start="66" data-line-end="91" class="language-javascript"><span class="hljs-comment">// Basic Example</span>           
+<pre><code class="language-javascript">// (example) notify-sw.js:
+const channel = new BroadcastChannel('Notify-sw');  
+    
+// Register event listener for the 'push' event.
+self.addEventListener('push', async function (event) {
+  const data = event.data ? event.data.json() : 'no payload';
+  if (data.title === 'auth') {
+    return channel.postMessage(data);
+  }
+  channel.postMessage(data);
+  // Keep the service worker alive until the notification is created.
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: data.icon,
+    })
+  );
+});
+</code></pre>
+</div>
+<div class="col-lg-5">
+<h1 class="display-5 fw-bold lh-1 mb-5">Setting the Service Worker of your website</h1>
+<p class="fs-5">Web-Push requires a service worker script to register the service worker of your website. You can download the script from <a href="https://github.com/hsintzuli/EasyNotify-Client/blob/client_module/example/public/notify-sw.js">notify-sw.js</a> or refer to <a href="https://developers.google.com/web/ilt/pwa/introduction-to-push-notifications#serviceworkerjs_3">service worker</a> to customize your service worker.</p>
+</div>
+</div>
+</div>   
+      <div class="b-example-divider"></div>
+    
+      <div class="container col-xxl-10 px-3 py-5">
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+          <div class="col-11 col-sm-9 col-lg-7">
+<pre><code class="language-javascript">
+// Basic Example
 $(document).ready(async function () {
   // Initialize notifier
   await notifier.init('/notify-sw.js', 'Notify-sw');
-  notifier.setPushHandler((data) => {
-  console.log(data);
-}); 
-            
-  <span class="hljs-comment">
+  EasyNotify.notifier.setPushHandler((data) => {
+    console.log('Handler receive data', data);
+  });         
+
 // Subcribe to your channel
 $('.subscribe-btn').click(async function(event) {
     event.preventDefault();
-    await notifier.subscribe(YOUR  CHANNELID, YOUR  PUBLICKEY);
+
+    // return true if subscribe successfully, otherwise, return false;
+    const subscribeSuccess = await EasyNotify.notifier.subscribe(channelId, publicKey);
 });
             
 // Unsubcribe to your channel
 $('#unsubscribe').click(async function (event) {
   event.preventDefault();
-  await EasyNotify.notifier.unsubscribe();
+
+  // return true if unsubscribe successfully, otherwise, return false;
+  const unsubscribeSuccess = await EasyNotify.notifier.unsubscribe();
 });
-</span></code></pre>
+</code></pre>
 </div>
 <div class="col-lg-5">
 <h1 class="display-5 fw-bold lh-1 mb-5">Set the push handler and subscribe to your channel!</h1>
@@ -264,47 +293,44 @@ $('#unsubscribe').click(async function (event) {
     
   <div class="b-example-divider"></div>
     
-      <div class="container col-xl-10 col-xxl-8 px-3 py-5">
+      <div class="container col-xl-10 col-xxl-10 px-3 py-5">
         <div class="row align-items-center g-lg-5 py-5">
           <div class="col-lg-6 text-center text-lg-start">
             <h1 class="display-4 fw-bold lh-1 mb-3">Customize your notification handler</h1>
-            <p class="col-lg-10 fs-5">Customize the notification through other useful tools, like <a href="https://sweetalert2.github.io/">SweetAlert2</a> or <a href="https://github.com/CodeSeven/toastr">toastr</a>.</p>
-<pre><code  class="language-js">
-notifier.setPushHandler((data) => {
+            <p class="col-lg-10 fs-5 mb-0">Customize the notification through other useful tools, like <a href="https://sweetalert2.github.io/">SweetAlert2</a> or <a href="https://github.com/CodeSeven/toastr">toastr</a>.</p>
+<pre><code  class="language-js">notifier.setPushHandler((data) => {
   console.log('Test handler receive data', data);
-    console.log('Test handler receive data', data);
-    try {
-      const { type } = JSON.parse(data.config);
-      const handler = handlers[type];
-      handler(data);
-    } catch (error) {
-      console.log('No config, just alert the notification')
-      alert(data.title + '\n' + data.body)
-    }
-})
+  try {
+    const { type } = JSON.parse(data.config);
+    const handler = handlers[type];
+    handler(data);
+  } catch (error) {
+    console.log('No config, just alert the notification')
+    alert(data.title + '\n' + data.body)
+  }
+});
 </code></pre>
           </div>
           <div class="col-md-10 mx-auto col-lg-6">
             <div class="p-4">
-              <pre class="px-0 mx-0"><code class="language-js">
-const sweetHandler = (data) = {
-  let { status } =JSON.parse(data.config);
+              <pre class="px-0 mx-0"><code class="language-js">             
+const sweetHandler = (data) => {
+  let { status } = JSON.parse(data.config);
   Swal.fire(data.title, data.body, status);
-}
-              
+};
 const toastrType = {
-  success:  toastr.success,
-  warning:  toastr.warning,
-  error:  toastr.error,
+  success: toastr.success,
+  warning: toastr.warning,
+  error: toastr.error,
 };
 const toastrHandler = (data) => {
   const { status } = JSON.parse(data.config);
-  const  handler = toastrType[status] || alert;
+  const handler = toastrType[status] || alert;
   handler(data.title, data.body);
 };
 const handlers = {
-  sweetalert:  sweetHandler,
-  toastr:  toastrHandler,
+  sweetalert: sweetHandler,
+  toastr: toastrHandler,
 };
               </code></pre>
             </div>

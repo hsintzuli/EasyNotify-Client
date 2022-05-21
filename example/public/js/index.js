@@ -15,12 +15,11 @@ const toastrType = {
   warning: toastr.warning,
   error: toastr.error,
 };
-hljs.initHighlightingOnLoad()
+hljs.highlightAll()
 const sweetHandler = (data) => {
   let { status } = JSON.parse(data.config);
   Swal.fire(data.title, data.body, status);
 };
-
 const toastrHandler = (data) => {
   const { status } = JSON.parse(data.config);
   const handler = toastrType[status] || alert;
